@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "Characters/STUBaseCharacter.h"
 #include "GameMods/STUGameModeBase.h"
