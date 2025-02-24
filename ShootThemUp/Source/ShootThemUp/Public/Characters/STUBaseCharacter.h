@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class USTUHealthComponent;
+class USTUWeaponComponent;
 class UTextRenderComponent;
 
 UCLASS()
@@ -38,6 +39,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UTextRenderComponent* HealthTextComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+	USTUWeaponComponent* WeaponComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	UAnimMontage* DeathAnimMontage;
