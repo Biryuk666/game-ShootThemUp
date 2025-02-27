@@ -16,6 +16,8 @@ void USTUHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	check(MaxHealth > 0);
+
 	SetHealth(MaxHealth);
 
 	AActor* ComponentOwner = GetOwner();
@@ -69,4 +71,9 @@ float USTUHealthComponent::GetHealth() const
 bool USTUHealthComponent::IsDead() const
 {
 	return FMath::IsNearlyZero(Health);
+}
+
+float USTUHealthComponent::GetHealthPercent() const
+{
+	return Health/MaxHealth;
 }
