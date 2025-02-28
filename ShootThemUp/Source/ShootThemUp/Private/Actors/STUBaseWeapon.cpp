@@ -9,6 +9,14 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogBaseWeapon, All, All);
 
+ASTUBaseWeapon::ASTUBaseWeapon()
+{
+	PrimaryActorTick.bCanEverTick = false;
+
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
+	SetRootComponent(WeaponMesh);
+}
+
 void ASTUBaseWeapon::StartFire() {}
 
 void ASTUBaseWeapon::StopFire() {}
@@ -36,12 +44,14 @@ bool ASTUBaseWeapon::CanReload() const
 	return CurrentAmmo.Bullets < DefaultAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
 
-ASTUBaseWeapon::ASTUBaseWeapon()
+FWeaponUIData ASTUBaseWeapon::GetUIData() const
 {
-	PrimaryActorTick.bCanEverTick = false;
+	return UIData;
+}
 
-	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponMesh");
-	SetRootComponent(WeaponMesh);
+FAmmoData ASTUBaseWeapon::GetAmmoData() const
+{
+	return CurrentAmmo;
 }
 
 void ASTUBaseWeapon::BeginPlay()
@@ -127,7 +137,6 @@ void ASTUBaseWeapon::DecreaseAmmo()
 	}
 
 	--CurrentAmmo.Bullets;
-	LogAmmo();
 
 	if (IsClipEmpty() && !IsAmmoEmpty())
 	{
