@@ -25,6 +25,8 @@ public:
 	bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
 	bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
+	bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TArray<FWeaponData> WeaponData;
@@ -70,6 +72,6 @@ private:
 
 	template <typename T> T* FindNotifyByClass(UAnimSequenceBase* Animation);
 
-	void OnClipEmpty();
+	void OnClipEmpty(ASTUBaseWeapon* AmmoEmptyWeapon);
 	void ChangeClip();
 };

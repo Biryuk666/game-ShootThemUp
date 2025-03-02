@@ -27,6 +27,32 @@ void USTUHealthComponent::BeginPlay()
 	}
 }
 
+float USTUHealthComponent::GetHealth() const
+{
+	return Health;
+}
+
+bool USTUHealthComponent::TryToAddHealth(float Amount)
+{
+	if (IsDead() || IsHealthFull())
+		return false;
+
+	SetHealth(Health + Amount);
+	UE_LOG(LogHealthComponent, Display, TEXT("Health was added"));
+
+	return true;
+}
+
+bool USTUHealthComponent::IsDead() const
+{
+	return FMath::IsNearlyZero(Health);
+}
+
+float USTUHealthComponent::GetHealthPercent() const
+{
+	return Health / MaxHealth;
+}
+
 void USTUHealthComponent::OnTakeAnyDamage(
 	AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
@@ -51,7 +77,7 @@ void USTUHealthComponent::HealUpdate()
 {
 	SetHealth(Health + HealModifier);
 
-	if (FMath::IsNearlyEqual(Health, MaxHealth) && GetWorld())
+	if (IsHealthFull() && GetWorld())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(HealTimerHandle);
 	}
@@ -63,17 +89,7 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 	OnHealthChanged.Broadcast(Health);
 }
 
-float USTUHealthComponent::GetHealth() const
+bool USTUHealthComponent::IsHealthFull()
 {
-	return Health;
-}
-
-bool USTUHealthComponent::IsDead() const
-{
-	return FMath::IsNearlyZero(Health);
-}
-
-float USTUHealthComponent::GetHealthPercent() const
-{
-	return Health/MaxHealth;
+	return FMath::IsNearlyEqual(Health, MaxHealth);
 }
