@@ -57,13 +57,13 @@ FAmmoData ASTUBaseWeapon::GetAmmoData() const
 bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
 {
 	if (CurrentAmmo.Infinite || IsAmmoFull())
-	return false;
+		return false;
 
 	if (IsAmmoEmpty())
 	{
 		UE_LOG(LogBaseWeapon, Display, TEXT("Ammo was empty!"));
 		CurrentAmmo.Clips = FMath::Clamp(ClipsAmount, 0, DefaultAmmo.Clips + 1);
-		OnClipEmpty.Broadcast(this);		
+		OnClipEmpty.Broadcast(this);
 	}
 	else if (CurrentAmmo.Clips < DefaultAmmo.Clips)
 	{
@@ -153,6 +153,8 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
 {
 	FCollisionQueryParams CollisionParams;
 	CollisionParams.AddIgnoredActor(GetOwner());
+	CollisionParams.bReturnPhysicalMaterial = true;
+
 	GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
 

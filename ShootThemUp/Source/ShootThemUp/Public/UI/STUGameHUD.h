@@ -15,7 +15,7 @@ public:
 	virtual void DrawHUD() override;
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, CAtegory = "UI")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
 
 	virtual void BeginPlay() override;

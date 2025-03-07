@@ -1,10 +1,15 @@
 // Shoot Them Up Game, All Rights Reserved.
 
 #include "Actors/STURifleWeapon.h"
+#include "Components/STUWeaponFXComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogRifleWeapon, All, All);
+
+ASTURifleWeapon::ASTURifleWeapon() {
+	WeaponFXComponent = CreateDefaultSubobject<USTUWeaponFXComponent>("WeaponFXComponent");
+}
 
 void ASTURifleWeapon::StartFire()
 {
@@ -37,9 +42,11 @@ void ASTURifleWeapon::MakeShot()
 
 	if (HitResult.bBlockingHit && Degrees < 90.0f)
 	{
-		DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f, 0, 3.0f);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
+		//DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), HitResult.ImpactPoint, FColor::Red, false, 3.0f, 0, 3.0f);
+		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10.0f, 24, FColor::Red, false, 5.0f);
 		MakeDamage(HitResult);
+
+		WeaponFXComponent->PlayImpactFX(HitResult);
 
 		UE_LOG(LogRifleWeapon, Display, TEXT("Bone: %s"), *HitResult.BoneName.ToString());
 	}
@@ -73,4 +80,10 @@ void ASTURifleWeapon::MakeDamage(const FHitResult& HitResult)
 	{
 		DamagedActor->TakeDamage(DamageAmount, FDamageEvent{}, GetPlayerController(), this);
 	}
+}
+
+void ASTURifleWeapon::BeginPlay() {
+	Super::BeginPlay();
+
+	check(WeaponFXComponent);
 }
