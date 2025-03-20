@@ -1,7 +1,7 @@
 // Shoot Them Up Game, All Rights Reserved.
 
-#include <Actors/STUBaseWeapon.h>
 #include "Components/STUWeaponComponent.h"
+#include <Actors/STUBaseWeapon.h>
 #include "Dev/AnimUtils.h"
 #include "Dev/STUEquipFinishedAnimNotify.h"
 #include "Dev/STUReloadFinishedAnimNotify.h"

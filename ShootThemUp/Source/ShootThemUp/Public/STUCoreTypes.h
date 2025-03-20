@@ -7,7 +7,7 @@
 class ASTUBaseWeapon;
 
 DECLARE_MULTICAST_DELEGATE(FOnDeathSignarure);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignarure, float);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthChangedSignarure, float, float);
 
 // -------------WEAPON-------------
 

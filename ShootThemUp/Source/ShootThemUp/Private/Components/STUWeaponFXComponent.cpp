@@ -1,7 +1,7 @@
 // Shoot Them Up Game, All Rights Reserved.
 
-#include "Components/DecalComponent.h"
 #include "Components/STUWeaponFXComponent.h"
+#include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
@@ -39,5 +39,8 @@ void USTUWeaponFXComponent::PlayImpactFX(const FHitResult& Hit)
 		Hit.ImpactPoint,													 //
 		Hit.ImpactNormal.Rotation());
 
-	DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime, ImpactData.DecalData.FadeOutTime);
+	if (DecalComponent)
+	{
+		DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime, ImpactData.DecalData.FadeOutTime);
+	}	
 }

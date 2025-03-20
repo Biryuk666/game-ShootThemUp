@@ -1,8 +1,11 @@
 // Shoot Them Up Game, All Rights Reserved.
 
 #include "Components/STUHealthComponent.h"
+#include "Camera/CameraShakeBase.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Controller.h"
+#include "GameFramework/Pawn.h"
 #include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
@@ -71,6 +74,8 @@ void USTUHealthComponent::OnTakeAnyDamage(
 	{
 		GetWorld()->GetTimerManager().SetTimer(HealTimerHandle, this, &USTUHealthComponent::HealUpdate, HealUpdateTime, true, HealDelay);
 	}
+
+	PlayCameraShake();
 }
 
 void USTUHealthComponent::HealUpdate()
@@ -85,11 +90,30 @@ void USTUHealthComponent::HealUpdate()
 
 void USTUHealthComponent::SetHealth(float NewHealth)
 {
-	Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
-	OnHealthChanged.Broadcast(Health);
+	const auto NextHealth = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
+	const auto HealthDelta = NextHealth - Health;
+	Health = NextHealth;
+	OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
 bool USTUHealthComponent::IsHealthFull()
 {
 	return FMath::IsNearlyEqual(Health, MaxHealth);
+}
+
+void USTUHealthComponent::PlayCameraShake() {
+	if (IsDead())
+		return;
+
+	const auto Player = Cast<APawn>(GetOwner());
+
+	if (!Player)
+		return;
+
+	const auto Controller = Player->GetController<APlayerController>();
+
+	if (!Controller)
+		return;
+
+	Controller->PlayerCameraManager->StartCameraShake(CameraShake);
 }

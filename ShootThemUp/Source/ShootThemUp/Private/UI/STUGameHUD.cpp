@@ -1,7 +1,7 @@
 // Shoot Them Up Game, All Rights Reserved.
 
-#include "Engine/Canvas.h"
 #include "UI/STUGameHUD.h"
+#include "Engine/Canvas.h"
 #include "UI/STUPlayerHUDWidget.h"
 
 void ASTUGameHUD::DrawHUD() {
